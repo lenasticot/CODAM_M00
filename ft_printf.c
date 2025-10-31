@@ -2,7 +2,10 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-char special_string(char c);
+char special_string(char c)
+{
+	return (0);
+}
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
