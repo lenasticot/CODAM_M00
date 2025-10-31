@@ -7,24 +7,9 @@ char special_string(char c)
 	return (0);
 }
 
-int	ft_memcmp(const void *s1, const void *s2, size_t n)
+int	whatisthis(char s, char spechar)
 {
-	unsigned char	*tmps1;
-	unsigned char	*tmps2;
-	size_t			i;
-
-	tmps1 = (unsigned char *)s1;
-	tmps2 = (unsigned char *)s2;
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (i < n)
-	{
-		if (tmps1[i] != tmps2[i])
-			return (tmps1[i] - tmps2[i]);
-		i++;
-	}
-	return (0);
+	return (s == spechar);
 }
 
 int ft_printf(const char *c, ...)
@@ -49,37 +34,46 @@ va_start(special, c);
 
 int token;
 int i;
+int j;
+char *result;
 
 i = 0;
+j = 0;
 token = 0;
-while (*c)
+while (c[i])
 {
-    if ((ft_memcmp((const void *)c, '%', 1)) == 0)
+    if (whatisthis(c[i], '%'))
     {
         i++;
-        if((ft_memcmp(*c, 's', 1)) == 0)
+        if (whatisthis(c[i], 's') || (whatisthis(c[i], 'c')))
         { 
-         // fetch the argument and print it
-            write(1, va_arg(special, char), 1);
-            i++;
+			result = va_arg(special, char*);
+        	i++;
+			j = 0;
+			while (result[j])
+			{
+				write(1, &result[j], 1);
+				j++;
+				token++;
+			}
         }
-         // need to count the characters from the special charaacters as well
+		if (whatisthis(c[i], 'd'))
 
+         // need to count the characters from the special charaacters as well
     }
-    write(1, &c, 1);
+    write(1, &c[i], 1);
     i++;
     token++;
 }
-
 va_end(special);
 return (token);
 }
 
-
-
 int main (void)
 {
-char *c = "Hello orld";
+char *c = "He %s llo %s worl %s d";
+int result;
 
-ft_printf(c);
+result = ft_printf(c, "123", "ta darone", "ntm");
+printf("%i", result);
 }
