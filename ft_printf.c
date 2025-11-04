@@ -52,6 +52,16 @@ char	*ft_itoa(int n)
 	return (result);
 }
 
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
 int	whatisthis(char s, char spechar)
 {
 	return (s == spechar);
@@ -65,14 +75,17 @@ va_start(special, c);
 int token;
 int i;
 int j;
+int len;
 char *result;
 
 i = 0;
 j = 0;
 token = 0;
+len = ft_strlen(c);
 
-if(c == NULL || (c[i] == '%' && c[i +1] == '\0'))
+if(c == NULL || (c[i] == '%' && c[i +1] == '\0') || (c[len] == '%' && c[len -1] != '%'))
 	return (-1);
+
 
 while (c[i])
 {
@@ -87,7 +100,7 @@ while (c[i])
 		if(whatisthis(c[i], '%'))
 			break;
 		//check for char//string
-        if (whatisthis(c[i], 's') || (whatisthis(c[i], 'c')))
+        else if (whatisthis(c[i], 's') || (whatisthis(c[i], 'c')))
         { 
 			result = va_arg(special, char*);
         	i++;
@@ -100,7 +113,7 @@ while (c[i])
 			}
         }
 		// check for int/digit
-		if ((whatisthis(c[i], 'd')) || (whatisthis(c[i], 'i')))
+		else if ((whatisthis(c[i], 'd')) || (whatisthis(c[i], 'i')))
 		{
 
 		
@@ -114,17 +127,21 @@ while (c[i])
 				token++;
 			}
 		}
+		else 
+			write(1, "%", 1);
     }
     write(1, &c[i], 1);
     i++;
     token++;
 }
+token++;
 va_end(special);
 return (token);
 }
 
 int main (void)
 {
+	// testing multiple stuff
 char *c = "He %i%s%% llo %s world.\t What a%,bout %% ?\n Now let's think about\n";
 int ft_test1;
 int test1;
@@ -136,27 +153,31 @@ printf("ft_test1: %i\n", ft_test1);
 test1 = printf(c, 123, "ta darone", "ntm", "hmm");
 printf("test1: %i\n", test1);
 
+// testing NULL
+// problem here
 printf("Test 2: \n");
 int ft_test2;
 int test2;
 
-ft_test2 = ft_printf("%s", NULL);
-test = printf("%s\n", NULL);
+ft_test2 = ft_printf("%p", NULL);
+test2 = printf("%p\n", NULL);
 
 printf("ft_test2: %p\n", ft_test2);
 printf("test2: %p\n", test2);
+// end of problem
 
+// testing 0
+// printf("Test 3: \n");
+// int ft_test3;
+// int test3;
 
-printf("Test 3: \n");
-int ft_test3;
-int test3;
+// ft_test3 = ft_printf(0);
+// test3 = printf(0);
 
-ft_test3 = ft_printf(NULL);
-test3 = printf(NULL);
+// printf("ft_test3: %i\n", ft_test3);
+// printf("test3: %i\n", test3);
 
-printf("ft_test3: %i\n", ft_test3);
-printf("test3: %i\n", test3);
-
+// testing null char
 printf("Test 4: \n");
 int ft_test4;
 int test4;
@@ -167,10 +188,34 @@ test4 = printf("\0");
 printf("ft_test4: %i\n", ft_test4);
 printf("test4: %i\n", test4);
 
+
+// testing individual %
+printf("Test 5: \n");
+int ft_test5;
+int test5;
+// this one is not really good so far
+ft_test5 = ft_printf("bonj% our\n");
+test5 = printf("bonj% our\n");
+
+printf("ft_test5: %i\n", ft_test5);
+printf("test5: %i\n", test5);
+
+// testing hexadecimal printing
+printf("Test 6: \n");
+int ft_test6;
+int test6;
+// ft_test6 = ft_printf(123456789);
+test6 = printf("hexadecimal of %i is : %x\n", 12255, 12255);
+
+// printf("ft_test6: %x\n", ft_test6);
+printf("test6: %i\n", test6);
+
+
 }
 
 
 // Edge cases to check 
+	// DONE
 	// if c is NULL
 	// should return -1
 	// DONE
@@ -179,9 +224,13 @@ printf("test4: %i\n", test4);
 	// eg "%,"
 	// need to print it normally
 
-
+	// DONE
 	//if % is the last char of the string
-	// should ignore and returns -1
+	// should ignore and returns -1 
+	// calculate strlen 
+	// if c[strlen] == % && c[strlen -1] != %
+	// return -1
+	// DONE
 
 // for result where you put the content of the format specifier,
 // could be good to use malloc for it to avoid issues 
