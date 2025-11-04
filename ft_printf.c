@@ -70,12 +70,20 @@ char *result;
 i = 0;
 j = 0;
 token = 0;
+
+if(c == NULL || (c[i] == '%' && c[i +1] == '\0'))
+	return (-1);
+
 while (c[i])
 {
     while (whatisthis(c[i], '%'))
     {
         i++;
 		// check for %
+		// do specific helper function to check all that shit
+		// if nothing match, print the % normally - so need to go back?
+		// or just print a new one
+		// to think about it
 		if(whatisthis(c[i], '%'))
 			break;
 		//check for char//string
@@ -117,19 +125,63 @@ return (token);
 
 int main (void)
 {
-char *c = "He %i%s%% llo %s world. What about %% ?\n Now let's think about\n";
-int result;
-int ouiresult;
+char *c = "He %i%s%% llo %s world.\t What a%,bout %% ?\n Now let's think about\n";
+int ft_test1;
+int test1;
 
-result = ft_printf(c, 123, "ta darone", "ntm", "hmm");
-printf("%i\n", result);
+printf("TEST 1\n");
+ft_test1 = ft_printf(c, 123, "ta darone", "ntm", "hmm");
+printf("ft_test1: %i\n", ft_test1);
 
-ouiresult = printf(c, 123, "ta darone", "ntm", "hmm");
-printf("%i\n", result);
+test1 = printf(c, 123, "ta darone", "ntm", "hmm");
+printf("test1: %i\n", test1);
 
+printf("Test 2: \n");
+int ft_test2;
+int test2;
+
+ft_test2 = ft_printf("%s", NULL);
+test = printf("%s\n", NULL);
+
+printf("ft_test2: %p\n", ft_test2);
+printf("test2: %p\n", test2);
+
+
+printf("Test 3: \n");
+int ft_test3;
+int test3;
+
+ft_test3 = ft_printf(NULL);
+test3 = printf(NULL);
+
+printf("ft_test3: %i\n", ft_test3);
+printf("test3: %i\n", test3);
+
+printf("Test 4: \n");
+int ft_test4;
+int test4;
+
+ft_test4 = ft_printf("\0");
+test4 = printf("\0");
+
+printf("ft_test4: %i\n", ft_test4);
+printf("test4: %i\n", test4);
 
 }
 
-			// need to check if va_arg isanum
-			// if not its not working
-			// actually its ok normal reaction of the function
+
+// Edge cases to check 
+	// if c is NULL
+	// should return -1
+	// DONE
+
+	// if format specifier is not specified
+	// eg "%,"
+	// need to print it normally
+
+
+	//if % is the last char of the string
+	// should ignore and returns -1
+
+// for result where you put the content of the format specifier,
+// could be good to use malloc for it to avoid issues 
