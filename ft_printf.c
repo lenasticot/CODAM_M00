@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <limits.h>
 
-char special_string(char c)
-{
-	return (0); 
-}
 
 int	count_nbr(int a)
 {
@@ -24,34 +20,34 @@ int	count_nbr(int a)
 	return (i);
 }
 
-char	*ft_itoa(int n)
-{
-	char		*result;
-	int			token;
-	int			is_neg;
-	long int	num;
+// char	*ft_itoa(int n)
+// {
+// 	char		*result;
+// 	int			token;
+// 	int			is_neg;
+// 	long int	num;
 
-	num = n;
-	is_neg = (num < 0);
-	token = count_nbr(num);
-	result = malloc(sizeof(char) * (token + 1));
-	if (result == NULL)
-		return (NULL);
-	result[token--] = '\0';
-	if (is_neg)
-	{
-		num = -num;
-		result[0] = '-';
-	}
-	if (num == 0)
-		result[0] = '0';
-	while (num > 0)
-	{
-		result[token--] = (num % 10) + '0';
-		num = num / 10;
-	}
-	return (result);
-}
+// 	num = n;
+// 	is_neg = (num < 0);
+// 	token = count_nbr(num);
+// 	result = malloc(sizeof(char) * (token + 1));
+// 	if (result == NULL)
+// 		return (NULL);
+// 	result[token--] = '\0';
+// 	if (is_neg)
+// 	{
+// 		num = -num;
+// 		result[0] = '-';
+// 	}
+// 	if (num == 0)
+// 		result[0] = '0';
+// 	while (num > 0)
+// 	{
+// 		result[token--] = (num % 10) + '0';
+// 		num = num / 10;
+// 	}
+// 	return (result);
+// }
 
 size_t	ft_strlen(const char *s)
 {
@@ -62,6 +58,7 @@ size_t	ft_strlen(const char *s)
 		i++;
 	return (i);
 }
+
 char* ft_hexa(int c)
 {
     char *result;
@@ -86,6 +83,42 @@ char* ft_hexa(int c)
     }
      return (result);
 }
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void	ft_putnbr(int n)
+{
+	if (n == (-2147483648))
+	{
+		write (1, "-2147483648", 11);
+		return ;
+	}
+	if (n < 0)
+	{
+		write(1, "-", 1);
+		n = -n;
+	}
+	if (n <= 9 && n >= 0)
+	{
+		ft_putchar(n + '0');
+		return ;
+	}
+	ft_putnbr (n / 10);
+	ft_putnbr (n % 10);
+}
+
+void	ft_unsigned_putnbr(unsigned int n)
+{
+	if (n <= 9 && n >= 0)
+	{
+		ft_putchar(n + '0');
+		return ;
+	}
+	ft_putnbr (n / 10);
+	ft_putnbr (n % 10);
+}
 
 int	whatisthis(char s, char spechar)
 {
@@ -106,40 +139,20 @@ i = 0;
 j = 0;
 token = 0;
 len = ft_strlen(c);
-
 if(c == NULL || (c[i] == '%' && c[i +1] == '\0') || (c[len] == '%' && c[len -1] != '%'))
 	return (-1);
-
-
 while (c[i])
 {
-    while (whatisthis(c[i], '%'))
+    if (whatisthis(c[i], '%'))
     {
-        i++;
-		// check for %
-		// do specific helper function to check all that shit
-		if(whatisthis(c[i], '%'))
-			break;
-		//check for char//string
-        else if (whatisthis(c[i], 's') || (whatisthis(c[i], 'c')))
+		if(whatisthis(c[i +1], '%'))
+		{ 
+				write (1, "%", 1);
+				token++;
+		}
+        else if (whatisthis(c[i +1], 's'))
         { 
 			result = va_arg(special, char*);
-        	i++;
-			j = 0;
-			while (result[j])
-			{
-				write(1, &result[j], 1);
-				j++;
-				token++;
-			}
-        }
-		// check for int/digit
-		else if ((whatisthis(c[i], 'd')) || (whatisthis(c[i], 'i')))
-		{
-
-		
-			result = ft_itoa(va_arg(special, int));
-			i++;
 			j = 0;
 			while (result[j])
 			{
@@ -148,14 +161,18 @@ while (c[i])
 				token++;
 			}
 		}
-		// check for hexa
-		// the function is backword at the moment
-		// also need to do 2 different things if it is lowercase or uppercase
-		// should add the tolower/toupper function for that
-		else if ((whatisthis(c[i], 'x')) || (whatisthis(c[i], 'X')))
+		else if (whatisthis(c[i +1], 'c'))
+			{
+				ft_putchar(va_arg(special, int));
+				token++;
+			}
+		else if ((whatisthis(c[i +1], 'd')) || (whatisthis(c[i +1], 'i')))
+				ft_putnbr(va_arg(special, int));
+		else if (whatisthis(c[i +1], 'u'))
+				ft_unsigned_putnbr(va_arg(special, unsigned int));
+		else if ((whatisthis(c[i +1], 'x')) || (whatisthis(c[i +1], 'X')))
 			{
 				result = ft_hexa(va_arg(special, int));
-				i++;
 				j = 0;
 				while (result[j])
 				{
@@ -164,104 +181,107 @@ while (c[i])
 					token++;
 				}
 			}
-		else if (whatisthis(c[i], 'p'))
-			{
-				result = &va_arg(special, char*);
-			}
-		else 
-			write(1, "%", 1);
+		// else if (whatisthis(c[i], 'p'))
+		// 	{
+		// 		result = &va_arg(special, char*);
+		// 	}
+		i += 2;
     }
+	else
+	{ 
     write(1, &c[i], 1);
     i++;
     token++;
+	}
 }
-token++;
 va_end(special);
 return (token);
 }
 
+
+
 int main (void)
 {
 	// testing multiple stuff
-char *c = "He %i%s%% llo %s world.\t What a%,bout %% ?\n Now let's think about\n";
+char *c = "test %d end\n";
 int ft_test1;
 int test1;
 
 printf("TEST 1\n");
-ft_test1 = ft_printf(c, 123, "ta darone", "ntm", "hmm");
+ft_test1 = ft_printf(c, 42);
 printf("ft_test1: %i\n", ft_test1);
 
-test1 = printf(c, 123, "ta darone", "ntm", "hmm");
+test1 = printf(c, 42);
 printf("test1: %i\n", test1);
 
 // testing NULL
 // problem here
-printf("Test 2: \n");
-int ft_test2;
-int test2;
+// printf("Test 2: \n");
+// int ft_test2;
+// int test2;
 
-ft_test2 = ft_printf("%p", NULL);
-test2 = printf("%p\n", NULL);
+// ft_test2 = ft_printf("%p", NULL);
+// test2 = printf("%p\n", NULL);
 
-printf("ft_test2: %p\n", ft_test2);
-printf("test2: %p\n", test2);
-// end of problem
+// printf("ft_test2: %p\n", ft_test2);
+// printf("test2: %p\n", test2);
+// // end of problem
 
-// testing 0
-// printf("Test 3: \n");
-// int ft_test3;
-// int test3;
+// // testing 0
+// // printf("Test 3: \n");
+// // int ft_test3;
+// // int test3;
 
-// ft_test3 = ft_printf(0);
-// test3 = printf(0);
+// // ft_test3 = ft_printf(0);
+// // test3 = printf(0);
 
-// printf("ft_test3: %i\n", ft_test3);
-// printf("test3: %i\n", test3);
+// // printf("ft_test3: %i\n", ft_test3);
+// // printf("test3: %i\n", test3);
 
-// testing null char
-printf("Test 4: \n");
-int ft_test4;
-int test4;
+// // testing null char
+// printf("Test 4: \n");
+// int ft_test4;
+// int test4;
 
-ft_test4 = ft_printf("\0");
-test4 = printf("\0");
+// ft_test4 = ft_printf("\0");
+// test4 = printf("\0");
 
-printf("ft_test4: %i\n", ft_test4);
-printf("test4: %i\n", test4);
+// printf("ft_test4: %i\n", ft_test4);
+// printf("test4: %i\n", test4);
 
 
-// testing individual %
-printf("Test 5: \n");
-int ft_test5;
-int test5;
-// this one is not really good so far
-ft_test5 = ft_printf("bonj% our\n");
-test5 = printf("bonj% our\n");
+// // testing individual %
+// printf("Test 5: \n");
+// int ft_test5;
+// int test5;
+// // this one is not really good so far
+// ft_test5 = ft_printf("bonj% our\n");
+// test5 = printf("bonj% our\n");
 
-printf("ft_test5: %i\n", ft_test5);
-printf("test5: %i\n", test5);
+// printf("ft_test5: %i\n", ft_test5);
+// printf("test5: %i\n", test5);
 
-// testing hexadecimal printing
-printf("Test 6: \n");
-int ft_test6;
-int test6;
-ft_test6 = ft_printf("hexadecimal of %i is : %x\n", 12255, 12255);
-test6 = printf("hexadecimal of %i is : %x\n", 12255, 12255);
+// // testing hexadecimal printing
+// printf("Test 6: \n");
+// int ft_test6;
+// int test6;
+// ft_test6 = ft_printf("hexadecimal of %i is : %x\n", 12255, 12255);
+// test6 = printf("hexadecimal of %i is : %x\n", 12255, 12255);
 
-printf("ft_test6: %i\n", ft_test6);
-printf("test6: %i\n", test6);
+// printf("ft_test6: %i\n", ft_test6);
+// printf("test6: %i\n", test6);
 
-// testing the %p response
-printf("Test 7: \n");
-int ft_test7;
-int test7;
-char *c7 = "Hello World";
+// // testing the %p response
+// printf("Test 7: \n");
+// int ft_test7;
+// int test7;
+// char *c7 = "Hello World";
 
-ft_test7 = ft_printf("Pointer of %s is : %p\n", c7, c7);
-test7 = printf("Pointer of %s is : %p\n", c7, c7);
+// ft_test7 = ft_printf("Pointer of %s is : %p\n", c7, c7);
+// test7 = printf("Pointer of %s is : %p\n", c7, c7);
 
-printf("ft_test7: %i\n", ft_test7);
-printf("test7: %i\n", test7);
+// printf("ft_test7: %i\n", ft_test7);
+// printf("test7: %i\n", test7);
 
 // testing the %u response
 printf("Test 8: \n");
