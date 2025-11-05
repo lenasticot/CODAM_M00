@@ -2,10 +2,11 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <limits.h>
 
 char special_string(char c)
 {
-	return (0);
+	return (0); 
 }
 
 int	count_nbr(int a)
@@ -61,6 +62,30 @@ size_t	ft_strlen(const char *s)
 		i++;
 	return (i);
 }
+char* ft_hexa(int c)
+{
+    char *result;
+    int i;
+    int j;
+    int temp;
+    
+    i = count_nbr(c);
+    j = 0;
+    result = malloc(sizeof(char) * i);
+    temp = 0;
+    while (c != 0)
+    {
+       temp = c % 16;
+       if (temp < 10)
+        temp = temp + 48;
+        else 
+            temp = temp + 55;
+       result[j] = temp;
+       j++;
+       c = c /16;
+    }
+     return (result);
+}
 
 int	whatisthis(char s, char spechar)
 {
@@ -71,7 +96,6 @@ int ft_printf(const char *c, ...)
 {
 va_list special;
 va_start(special, c);
-
 int token;
 int i;
 int j;
@@ -94,9 +118,6 @@ while (c[i])
         i++;
 		// check for %
 		// do specific helper function to check all that shit
-		// if nothing match, print the % normally - so need to go back?
-		// or just print a new one
-		// to think about it
 		if(whatisthis(c[i], '%'))
 			break;
 		//check for char//string
@@ -127,6 +148,26 @@ while (c[i])
 				token++;
 			}
 		}
+		// check for hexa
+		// the function is backword at the moment
+		// also need to do 2 different things if it is lowercase or uppercase
+		// should add the tolower/toupper function for that
+		else if ((whatisthis(c[i], 'x')) || (whatisthis(c[i], 'X')))
+			{
+				result = ft_hexa(va_arg(special, int));
+				i++;
+				j = 0;
+				while (result[j])
+				{
+					write(1, &result[j], 1);
+					j++;
+					token++;
+				}
+			}
+		else if (whatisthis(c[i], 'p'))
+			{
+				result = &va_arg(special, char*);
+			}
 		else 
 			write(1, "%", 1);
     }
@@ -204,12 +245,34 @@ printf("test5: %i\n", test5);
 printf("Test 6: \n");
 int ft_test6;
 int test6;
-// ft_test6 = ft_printf(123456789);
+ft_test6 = ft_printf("hexadecimal of %i is : %x\n", 12255, 12255);
 test6 = printf("hexadecimal of %i is : %x\n", 12255, 12255);
 
-// printf("ft_test6: %x\n", ft_test6);
+printf("ft_test6: %i\n", ft_test6);
 printf("test6: %i\n", test6);
 
+// testing the %p response
+printf("Test 7: \n");
+int ft_test7;
+int test7;
+char *c7 = "Hello World";
+
+ft_test7 = ft_printf("Pointer of %s is : %p\n", c7, c7);
+test7 = printf("Pointer of %s is : %p\n", c7, c7);
+
+printf("ft_test7: %i\n", ft_test7);
+printf("test7: %i\n", test7);
+
+// testing the %u response
+printf("Test 8: \n");
+int ft_test8;
+int test8;
+
+ft_test8 = ft_printf("unsigned decimal of %i is %u\n", INT_MAX + 1, INT_MAX +1);
+test8 = printf("unsigned decimal of %i is %u\n", INT_MAX +1, INT_MAX +1);
+
+printf("ft_test8: %i\n", ft_test8);
+printf("test8: %i\n", test8);
 
 }
 

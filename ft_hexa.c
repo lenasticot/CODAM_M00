@@ -7,7 +7,7 @@ int	count_nbr(int a)
 	int	i;
 
 	i = 0;
-	if (a <= 0)
+	if (a <= 0) 
 		i++;
 	while (a != 0)
 	{
