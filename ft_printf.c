@@ -84,6 +84,21 @@ char* ft_hexa(int c)
      return (result);
 }
 
+int	count_hex_digits(unsigned long b)
+{
+	int	i;
+
+	i = 0;
+	if (b == 0)
+		return (1);
+	while (b != 0)
+	{
+		i++;
+		b = b / 16;
+	}
+	return (i);
+}
+
 char* ft_pointer(void *c)
 {
     char *result;
@@ -91,15 +106,15 @@ char* ft_pointer(void *c)
     int j;
     unsigned long temp;
 	unsigned long c_bis;
+	
     
 	c_bis = (unsigned long)c;
 	// cannot be count number because there is letters
 	
-    i = ft_strlen((char *)c) + 2;
+    i = count_hex_digits(c_bis) + 2;
     j = 0;
-    result = malloc(sizeof(char) * i);
-	result[0] = '0';
-	result[1] = 'x';
+    result = malloc((sizeof(char) * i) +1);
+	result[i--] = '\0';
     temp = 0;
     while (c_bis != 0)
     {
@@ -107,11 +122,13 @@ char* ft_pointer(void *c)
        if (temp < 10)
         temp = temp + 48;
         else 
-            temp = temp + 55;
+            temp = temp + 87;
        result[i] = temp;
        i--;
        c_bis = c_bis /16;
     }
+	result[i--] = 'x';
+	result[i] = '0';
      return (result);
 }
 
@@ -324,9 +341,10 @@ printf("Test 7: \n");
 int ft_test7;
 int test7;
 char *c7 = "Hello World";
+char *d7 = "Mange tes morts";
 
-ft_test7 = ft_printf("Pointer of %s is : %p\n", c7, c7);
-test7 = printf("Pointer of %s is : %p\n", c7, c7);
+ft_test7 = ft_printf("Pointer of %s is : %p; but pointer of %s is : %p\n", c7, c7, d7, d7);
+test7 = printf("Pointer of %s is : %p; but pointer of %s is : %p\n", c7, c7, d7, d7);
 
 printf("ft_test7: %i\n", ft_test7);
 printf("test7: %i\n", test7);
