@@ -83,6 +83,38 @@ char* ft_hexa(int c)
     }
      return (result);
 }
+
+char* ft_pointer(void *c)
+{
+    char *result;
+	int i;
+    int j;
+    unsigned long temp;
+	unsigned long c_bis;
+    
+	c_bis = (unsigned long)c;
+	// cannot be count number because there is letters
+	
+    i = ft_strlen((char *)c) + 2;
+    j = 0;
+    result = malloc(sizeof(char) * i);
+	result[0] = '0';
+	result[1] = 'x';
+    temp = 0;
+    while (c_bis != 0)
+    {
+       temp = c_bis % 16;
+       if (temp < 10)
+        temp = temp + 48;
+        else 
+            temp = temp + 55;
+       result[i] = temp;
+       i--;
+       c_bis = c_bis /16;
+    }
+     return (result);
+}
+
 void	ft_putchar(char c)
 {
 	write(1, &c, 1);
@@ -161,16 +193,16 @@ while (c[i])
 				token++;
 			}
 		}
-		else if (whatisthis(c[i +1], 'c'))
+		else if (whatisthis(c[i + 1], 'c'))
 			{
 				ft_putchar(va_arg(special, int));
 				token++;
 			}
-		else if ((whatisthis(c[i +1], 'd')) || (whatisthis(c[i +1], 'i')))
+		else if ((whatisthis(c[i + 1], 'd')) || (whatisthis(c[i + 1], 'i')))
 				ft_putnbr(va_arg(special, int));
-		else if (whatisthis(c[i +1], 'u'))
+		else if (whatisthis(c[i + 1], 'u'))
 				ft_unsigned_putnbr(va_arg(special, unsigned int));
-		else if ((whatisthis(c[i +1], 'x')) || (whatisthis(c[i +1], 'X')))
+		else if ((whatisthis(c[i + 1], 'x')) || (whatisthis(c[i + 1], 'X')))
 			{
 				result = ft_hexa(va_arg(special, int));
 				j = 0;
@@ -181,10 +213,17 @@ while (c[i])
 					token++;
 				}
 			}
-		// else if (whatisthis(c[i], 'p'))
-		// 	{
-		// 		result = &va_arg(special, char*);
-		// 	}
+		else if (whatisthis(c[i + 1], 'p'))
+			{
+				result = ft_pointer(va_arg(special, void *));
+				j = 0;
+				while (result[j])
+				{
+					write(1, &result[j], 1);
+					j++;
+					token++;
+				}
+			}
 		i += 2;
     }
 	else
@@ -197,6 +236,15 @@ while (c[i])
 va_end(special);
 return (token);
 }
+
+// for pointers
+    // Type expected: argument must be of type void * (or one promoted/cast to void ). Example: printf("%p\n", (void )ptr);
+    // Output format: implementation-defined, but typically a hexadecimal representation of the address, often prefixed with 0x (e.g., 0x7ffee3b2a5c0). 
+	// The exact width, lowercase/uppercase letters, and prefix are not guaranteed by the standard.
+    // Behavior on mismatched type: passing a pointer type other than void * without casting leads 
+	// to undefined behavior because printf expects an argument of the exact type it is specified to consume.
+    // NULL pointer: printed representation is implementation-defined; common outputs include (nil) or 0x0.
+    // Field width and flags: width, - (left adjust), and 0 (zero pad) may be supported by implementations; precision is not meaningful for %p in the standard and may be ignored.
 
 
 
@@ -271,25 +319,25 @@ printf("test1: %i\n", test1);
 // printf("ft_test6: %i\n", ft_test6);
 // printf("test6: %i\n", test6);
 
-// // testing the %p response
-// printf("Test 7: \n");
-// int ft_test7;
-// int test7;
-// char *c7 = "Hello World";
+// testing the %p response
+printf("Test 7: \n");
+int ft_test7;
+int test7;
+char *c7 = "Hello World";
 
-// ft_test7 = ft_printf("Pointer of %s is : %p\n", c7, c7);
-// test7 = printf("Pointer of %s is : %p\n", c7, c7);
+ft_test7 = ft_printf("Pointer of %s is : %p\n", c7, c7);
+test7 = printf("Pointer of %s is : %p\n", c7, c7);
 
-// printf("ft_test7: %i\n", ft_test7);
-// printf("test7: %i\n", test7);
+printf("ft_test7: %i\n", ft_test7);
+printf("test7: %i\n", test7);
 
 // testing the %u response
 printf("Test 8: \n");
 int ft_test8;
 int test8;
 
-ft_test8 = ft_printf("unsigned decimal of %i is %u\n", INT_MAX + 1, INT_MAX +1);
-test8 = printf("unsigned decimal of %i is %u\n", INT_MAX +1, INT_MAX +1);
+ft_test8 = ft_printf("max of int is %i but unsigned int can go above: %u\n", INT_MAX, INT_MAX +1);
+test8 = printf("max of int is %i but unsigned int can go above: %u\n", INT_MAX, INT_MAX +1);
 
 printf("ft_test8: %i\n", ft_test8);
 printf("test8: %i\n", test8);
