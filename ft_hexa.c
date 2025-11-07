@@ -1,25 +1,5 @@
+#include "libftprintf.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-int	count_nbr(int a)
-{
-	int	i;
-
-	i = 0;
-	if (a <= 0) 
-		i++;
-	while (a != 0)
-	{
-		i++;
-		a = a / 10;
-	}
-	return (i);
-}
-// the function works but the issue is that right now it is backword 
-// so eventually could turn it upside down without my printf? 
-// or try something here direclty
-// need to think about it
 char* ft_hexa(int c)
 {
     char *result;
@@ -42,16 +22,5 @@ char* ft_hexa(int c)
        j++;
        c = c /16;
     }
-    return (result);
-}
-
-int main(void)
-{
-    int a;
-
-    a = 5675;
-    char *result = ft_hexa(a);
-    printf("%s", result);
-
-    
+     return (result);
 }
