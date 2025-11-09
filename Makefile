@@ -10,10 +10,12 @@ ft_unsigned_putnbr.c \
 whatisthis.c \
 main.c \
 ft_printf.c \
+ft_putstr.c \
+ft_whatisthat.c \
 
 OBJS = $(SRCS:.c=.o)
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 all: $(NAME)
 
