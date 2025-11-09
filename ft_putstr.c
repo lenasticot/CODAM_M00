@@ -6,13 +6,13 @@
 /*   By: leodum <leodum@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 14:19:15 by leodum            #+#    #+#             */
-/*   Updated: 2025/11/09 14:56:33 by leodum           ###   ########.fr       */
+/*   Updated: 2025/11/09 16:00:41 by leodum           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-void	ft_putstr(char *s)
+int	ft_putstr(char *s)
 {
 	int	i;
 
@@ -24,4 +24,5 @@ void	ft_putstr(char *s)
 		write(1, &s[i], 1);
 		i++;
 	}
+	return (i);
 }

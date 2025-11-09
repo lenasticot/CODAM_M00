@@ -17,9 +17,11 @@ int	ft_printf(const char *c, ...)
 	va_list	special;
 	int		i;
 	int		len;
+	int		token;
 
 	va_start(special, c);
 	i = 0;
+	token = 0;
 	if (c == NULL)
 		return (0);
 	len = ft_strlen(c) - 1;
@@ -30,7 +32,7 @@ int	ft_printf(const char *c, ...)
 	{
 		if (whatisthis(c[i], '%'))
 		{
-			ft_whatisthat(c[i +1], &special);
+			token = ft_whatisthat(c[i +1], &special);
 			i += 2;
 		}
 		else
@@ -40,7 +42,7 @@ int	ft_printf(const char *c, ...)
 		}
 	}
 	va_end(special);
-	return (i);
+	return (token);
 }
 
 // dont forget the token question
