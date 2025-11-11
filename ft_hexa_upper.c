@@ -14,12 +14,14 @@
 
 char	*ft_hexa_upper(unsigned int c)
 {
-	char	*result;
-	int		i;
-	int		temp;
+	char			*result;
+	int				i;
+	unsigned int	temp;
 
+	if (c == 0)
+		return (ft_strdup("0"));
 	i = count_hex_digits(c);
-	result = malloc(sizeof(char) * i + 1);
+	result = calloc(i +1, sizeof(char) * i);
 	result[i] = '\0';
 	temp = 0;
 	while (c != 0)

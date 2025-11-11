@@ -36,6 +36,8 @@ int		whatisthis(char s, char spechar);
 int		ft_putstr(char *s);
 int		ft_whatisthat(char c, va_list *special);
 char	*ft_hexa_lower(unsigned int c);
+char	*ft_strdup(const char *s);
+void	*ft_calloc(size_t count, size_t size);
 // int     main(void);
 
 #endif

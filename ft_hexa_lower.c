@@ -1,13 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_hexa_lower.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: leodum <leodum@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/11 11:21:48 by leodum            #+#    #+#             */
+/*   Updated: 2025/11/11 11:21:48 by leodum           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 char	*ft_hexa_lower(unsigned int c)
 {
-	char	*result;
-	int		i;
-	int		temp;
+	char			*result;
+	int				i;
+	unsigned int	temp;
 
+	if (c == 0)
+		return (ft_strdup("0"));
 	i = count_hex_digits(c);
-	result = malloc(sizeof(char) * i + 1);
+	result = calloc(i + 1, sizeof(char) * i);
 	result[i] = '\0';
 	temp = 0;
 	while (c != 0)

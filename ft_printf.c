@@ -22,11 +22,9 @@ int	ft_printf(const char *c, ...)
 	va_start(special, c);
 	i = 0;
 	token = 0;
-	if (c == NULL)
-		return (0);
 	len = ft_strlen(c) - 1;
 	if ((c[i] == '%' && c[i + 1] == '\0')
-		|| (c[len] == '%' && c[len - 1] != '%'))
+		|| (c[len] == '%' && c[len - 1] != '%') || (c == NULL))
 		return (0);
 	while (c[i])
 	{
@@ -36,13 +34,8 @@ int	ft_printf(const char *c, ...)
 			i += 2;
 		}
 		else
-		{
-			token += ft_putchar(c[i]);
-			i++;
-		}
+			token += ft_putchar(c[i++]);
 	}
 	va_end(special);
 	return (token);
 }
-
-// dont forget the token question

@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: leodum <leodum@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/07 15:54:51 by leodum            #+#    #+#             */
-/*   Updated: 2025/10/19 17:56:12 by leodum           ###   ########.fr       */
+/*   Created: 2025/10/14 18:37:29 by leodum            #+#    #+#             */
+/*   Updated: 2025/11/11 10:17:18 by leodum           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-int	ft_isalpha(int c)
+void	*ft_calloc(size_t count, size_t size)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	else
-		return (0);
+	unsigned char	*ptr;
+	size_t			i;
+	size_t			len;
+
+	i = 0;
+	if (size != 0 && count > SIZE_MAX / size)
+		return (NULL);
+	len = count * size;
+	ptr = malloc(len);
+	if (ptr == NULL)
+		return (NULL);
+	while (i < len)
+		ptr[i++] = 0;
+	return (ptr);
 }

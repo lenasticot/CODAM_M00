@@ -20,12 +20,11 @@ char	*ft_pointer(void *c)
 	unsigned long	c_bis;
 
 	c_bis = (unsigned long)c;
+	if (c_bis == 0)
+		return (ft_strdup("(nil)"));
 	i = count_hex_digits(c_bis) + 2;
-	result = malloc((sizeof(char) * i) + 1);
-	if (result == NULL || c_bis == 0)
-		return (NULL);
+	result = ft_calloc(i + 1, (sizeof(char) * i));
 	result[i] = '\0';
-
 	temp = 0;
 	while (c_bis != 0)
 	{
