@@ -1,5 +1,3 @@
 {
-	"files.associations": {
-		"libftprintf.h": "c"
-	}
+  "makefile.configureOnOpen": false
 }

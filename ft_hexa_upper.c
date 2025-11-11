@@ -10,18 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-char	*ft_hexa(int c)
+char	*ft_hexa_upper(unsigned int c)
 {
 	char	*result;
 	int		i;
-	int		j;
 	int		temp;
 
-	i = count_nbr(c);
-	j = 0;
-	result = malloc(sizeof(char) * i);
+	i = count_hex_digits(c);
+	result = malloc(sizeof(char) * i + 1);
+	result[i] = '\0';
 	temp = 0;
 	while (c != 0)
 	{
@@ -30,8 +29,7 @@ char	*ft_hexa(int c)
 			temp = temp + 48;
 		else
 			temp = temp + 55;
-		result[j] = temp;
-		j++;
+		result[--i] = temp;
 		c = c / 16;
 	}
 	return (result);

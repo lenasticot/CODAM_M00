@@ -10,15 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-void	ft_unsigned_putnbr(unsigned int n)
+int	ft_unsigned_putnbr(unsigned int n)
 {
+	int i;
+
+	i = 0;
 	if (n <= 9)
 	{
-		ft_putchar(n + '0');
-		return ;
+		i += ft_putchar(n + '0');
+		return (i);
 	}
-	ft_unsigned_putnbr (n / 10);
-	ft_unsigned_putnbr (n % 10);
+	i += ft_unsigned_putnbr (n / 10);
+	i += ft_unsigned_putnbr (n % 10);
+	return (i);
 }

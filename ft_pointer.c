@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 char	*ft_pointer(void *c)
 {
@@ -22,7 +22,10 @@ char	*ft_pointer(void *c)
 	c_bis = (unsigned long)c;
 	i = count_hex_digits(c_bis) + 2;
 	result = malloc((sizeof(char) * i) + 1);
-	result[i--] = '\0';
+	if (result == NULL || c_bis == 0)
+		return (NULL);
+	result[i] = '\0';
+
 	temp = 0;
 	while (c_bis != 0)
 	{
@@ -31,11 +34,10 @@ char	*ft_pointer(void *c)
 			temp = temp + 48;
 		else
 			temp = temp + 87;
-		result[i] = temp;
-		i--;
+		result[--i] = temp;
 		c_bis = c_bis / 16;
 	}
-	result[i--] = 'x';
-	result[i] = '0';
+	result[--i] = 'x';
+	result[--i] = '0';
 	return (result);
 }

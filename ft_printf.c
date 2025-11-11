@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	ft_printf(const char *c, ...)
 {
@@ -32,12 +32,12 @@ int	ft_printf(const char *c, ...)
 	{
 		if (whatisthis(c[i], '%'))
 		{
-			token = ft_whatisthat(c[i +1], &special);
+			token += ft_whatisthat(c[i +1], &special);
 			i += 2;
 		}
 		else
 		{
-			ft_putchar(c[i]);
+			token += ft_putchar(c[i]);
 			i++;
 		}
 	}

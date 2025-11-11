@@ -1,17 +1,17 @@
 NAME = libftprintf.a
-SRCS = count_nbr.c \
-ft_strlen.c \
-ft_hexa.c \
+SRCS = ft_strlen.c \
+ft_hexa_upper.c \
 count_hex_digits.c \
 ft_pointer.c \
 ft_putchar.c \
 ft_putnbr.c \
 ft_unsigned_putnbr.c \
 whatisthis.c \
-main.c \
 ft_printf.c \
 ft_putstr.c \
 ft_whatisthat.c \
+ft_hexa_lower.c \
+# main.c \
 
 OBJS = $(SRCS:.c=.o)
 CC = cc
@@ -33,9 +33,9 @@ fclean: clean
 
 re: fclean all
 
-test: $(NAME)
-	$(CC) $(CFLAGS) main.c $(NAME) -o test_printf
-	./test_printf
-	rm test_printf
+# test: $(NAME)
+# 	$(CC) $(CFLAGS) main.c $(NAME) -o test_printf
+# 	./test_printf
+# 	rm test_printf
 
 .PHONY: all clean fclean re
