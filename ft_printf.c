@@ -25,7 +25,7 @@ int	ft_printf(const char *c, ...)
 	len = ft_strlen(c) - 1;
 	if ((c[i] == '%' && c[i + 1] == '\0')
 		|| (c[len] == '%' && c[len - 1] != '%') || (c == NULL))
-		return (0);
+		return (-1);
 	while (c[i])
 	{
 		if (whatisthis(c[i], '%'))

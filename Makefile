@@ -13,7 +13,6 @@ ft_whatisthat.c \
 ft_hexa_lower.c \
 ft_strdup.c \
 ft_calloc.c \
-# main.c \
 
 OBJS = $(SRCS:.c=.o)
 CC = cc
@@ -27,10 +26,6 @@ $(NAME): $(OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# test: $(NAME)
-# 	$(CC) $(CFLAGS) main.c $(NAME) -o test_printf
-# 	./test_printf
-
 clean:
 	rm -f $(OBJS)
 
@@ -38,7 +33,5 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
-
-
 
 .PHONY: all clean fclean re
